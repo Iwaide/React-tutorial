@@ -50,6 +50,7 @@ class Game extends React.Component {
     this.state = {
       history: [{
         squares: Array(9).fill(null),
+        desc: '',
       }],
       xIsNext: true,
       stepNumber: 0,
@@ -64,9 +65,11 @@ class Game extends React.Component {
       return;
     }
     squares[i] = this.state.xIsNext ? 'X' : 'O';
+    const desc = genarateDesc(squares[i], i)
     this.setState({
       history: history.concat([{
-        squares: squares
+        squares: squares,
+        desc : desc
       }]),
       xIsNext: !this.state.xIsNext,
       stepNumber: history.length,
@@ -84,15 +87,19 @@ class Game extends React.Component {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
+    const desc = current.desc
 
     const moves = history.map((step, move) => {
       const desc = move ?
-        'Go to move #' + move :
+        'Go to move #' + (move + 1):
         'Go to game start';
 
         return (
           <li key={move}>
-            <button onClick={()=> this.jumpTo(move)}>{desc}</button>
+            <p>
+              <button onClick={()=> this.jumpTo(move)}>{desc}</button>
+              <span>{step.desc}</span>
+            </p>
           </li>
         )
     });
@@ -114,6 +121,7 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
+          <div>{desc}</div>
           <ol>{moves}</ol>
         </div>
       </div>
@@ -138,6 +146,12 @@ function calculateWinner(squares) {
       return squares[a];
     }
   }
+}
+
+function genarateDesc(player, i) {
+  const col = i % 3 + 1;
+  const row = Math.floor(i / 3) + 1;
+  return player + ' markes' + ' row: ' + row + ' col: ' + col
 }
 
 // ========================================
