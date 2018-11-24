@@ -86,6 +86,7 @@ class Game extends React.Component {
     this.setState({
       stepNumber: step,
       xIsNext: (step % 2) === 0,
+      highlighted_squares: calculateWinner(this.state.history[step].squares).line,
     })
   }
 
