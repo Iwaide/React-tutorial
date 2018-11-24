@@ -56,6 +56,7 @@ class Game extends React.Component {
       xIsNext: true,
       stepNumber: 0,
       highlighted_squares: [],
+      isDraw: false,
     }
   }
 
@@ -76,6 +77,7 @@ class Game extends React.Component {
       xIsNext: !this.state.xIsNext,
       stepNumber: history.length,
       highlighted_squares: calculateWinner(squares).line,
+      isDraw: (squares.filter(square => square !== null).length === 9)
     });
   }
 
@@ -110,6 +112,8 @@ class Game extends React.Component {
     let status;
     if (winner) {
       status = 'Winner: ' + winner;
+    } else if (this.state.isDraw) {
+      status = 'Draw';
     } else {
       status = 'NextPlayer: ' + (this.state.xIsNext ? 'X' : 'O');
     }
